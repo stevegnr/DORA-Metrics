@@ -91,15 +91,29 @@ async function avgTimeForAllBugsToBeCorrected() {
   const meanTimeToRecoverKPI = document.getElementById("meanTimeToRecoverKPI");
   const meanTimeToRecoverValue = document.createElement("p");
   if (avgTimePerBug < 1) {
-    meanTimeToRecoverValue.innerText = `${avgTimePerBug.toFixed(
-      2
-    )}h !!! 🤘🤘🤘`;
+    meanTimeToRecoverValue.innerText = `${
+      Math.round(avgTimePerBug * 100 * 60) / 100
+    }min !!! 🤘🤘🤘`;
+    meanTimeToRecoverKPI.style.backgroundColor = "green";
+    meanTimeToRecoverKPI.style.color = "white";
   } else if (avgTimePerBug >= 1 && avgTimePerBug < 24) {
-    meanTimeToRecoverValue.innerText = `${avgTimePerBug.toFixed(2)}h ! 👍`;
+    meanTimeToRecoverValue.innerText = `${
+      Math.round(avgTimePerBug * 100) / 100
+    }h ! 👍`;
+    meanTimeToRecoverKPI.style.backgroundColor = "green";
+    meanTimeToRecoverKPI.style.color = "white";
   } else if (avgTimePerBug >= 24 && avgTimePerBug < 168) {
-    meanTimeToRecoverValue.innerText = `${(avgTimePerBug / 24).toFixed(2)}j 🤷‍♂️`;
+    meanTimeToRecoverValue.innerText = `${
+      Math.round((avgTimePerBug / 24) * 100) / 100
+    }j 🤷‍♂️`;
+    meanTimeToRecoverKPI.style.backgroundColor = "yellow";
+    meanTimeToRecoverKPI.style.color = "black";
   } else {
-    meanTimeToRecoverValue.innerText = `${(avgTimePerBug / 24).toFixed(2)}j 😭`;
+    meanTimeToRecoverValue.innerText = `${
+      Math.round((avgTimePerBug / 24) * 100) / 100
+    }j 😭`;
+    meanTimeToRecoverKPI.style.backgroundColor = "red";
+    meanTimeToRecoverKPI.style.color = "white";
   }
 
   meanTimeToRecoverKPI.appendChild(meanTimeToRecoverValue);
