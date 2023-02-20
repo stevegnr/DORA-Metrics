@@ -5,23 +5,46 @@
 article {
   border: 1px solid lightgray;
   margin: 5px;
-  width: 20vw;
+  height: 30vh;
+  width: 40vw;
   font-size: small;
   background-color: #fff1d0;
+  padding: 5px;
 }
 
-article h4 {
-  color: #07a0c3;
-}
-
-.affichageKPI {
-  height: 20vh;
-  width: 20vw;
-  border-radius: 50%;
+main {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 80%;
+  height: 80%;
+  border: 1px solid black;
+  padding: 10%;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+}
+
+.wrap-KPI {
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.KPI {
+  border: 1px solid black;
+  border-radius: 50%;
+  height: 100%;
+  width: 40%;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
-  text-align: center;
-  font-size: large;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.KPI p {
+  font-size: 3em;
 }

@@ -11,15 +11,53 @@
   <body>
     <h1>Dora Metrics</h1>
     <main>
-      <button class="launchAPI">launch API</button>
-      <h2>Temps moyen de récupération</h2>
-      <h4>
-        (Temps écoulé entre la remontée d'un bug et la mise en production du
-        correctif)
-      </h4>
-      <section class="affichageKPI"></section>
-      <h2>Détails des tickets</h2>
-      <section class="jira"></section>
+      <div class="wrapper">
+        <article id="deploymentFrequency">
+          <h2>Fréquence de déploiement</h2>
+          <button class="launchAPI">launch API</button>
+          <div class="wrap-KPI"><div class="KPI"></div></div>
+
+          <h4>
+            (La fréquence avec laquelle des déploiements réussis sont effectués)
+          </h4>
+          <p class="loading"></p>
+        </article>
+        <article id="leadTimeForChange">
+          <h2>Délai d'exécution des changements</h2>
+          <button class="launchAPI">launch API</button>
+          <div class="wrap-KPI"><div class="KPI"></div></div>
+          <h4>
+            (Le temps entre la réception de la demande d’un changement de code
+            et son passage à un état déployable)
+          </h4>
+          <p class="loading"></p>
+        </article>
+      </div>
+      <div class="wrapper">
+        <article id="meanTimeToRecover">
+          <h2>Temps moyen de récupération</h2>
+          <button class="launchJiraAPI">launch API</button>
+          <div class="wrap-KPI">
+            <div class="KPI" id="meanTimeToRecoverKPI"></div>
+          </div>
+          <h4>
+            (Temps écoulé entre la remontée d'un bug et la mise en production du
+            correctif)
+          </h4>
+          <div id="loadingMTTR"></div>
+        </article>
+        <article id="changeFailureRate">
+          <h2>Taux d'échec des changements</h2>
+          <button class="launchAPI">launch API</button>
+          <div class="wrap-KPI"><div class="KPI"></div></div>
+          <h4>
+            (La fréquence à laquelle les modifications ou les correctifs
+            apportés par une équipe entraînent des défaillances ou des pannes
+            après le déploiement du code)
+          </h4>
+          <p class="loading"></p>
+        </article>
+      </div>
     </main>
   </body>
   <script type="module" src="script.js"></script>
