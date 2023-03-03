@@ -17,6 +17,14 @@
           <button class="launchDeploymentFrequencyAPI">launch API</button>
           <div class="wrap-KPI">
             <div class="KPI" id="deploymentFrequencyKPI"></div>
+            <div>
+              <ul>
+                <li>🚀 : 1+/j</li>
+                <li>💪 : 1/j → 1/w</li>
+                <li>🤷‍♂️ : 1/w → 1/m</li>
+                <li>💩 : 1/m → 1/6m</li>
+              </ul>
+            </div>
           </div>
 
           <h4>
@@ -27,7 +35,17 @@
         <article id="leadTimeForChange">
           <h2>Délai d'exécution des changements</h2>
           <button class="launchAPI">launch API</button>
-          <div class="wrap-KPI"><div class="KPI"></div></div>
+          <div class="wrap-KPI">
+            <div class="KPI" id="leadTimeForChangeKPI"></div>
+            <div>
+              <ul>
+                <li>🚀 : 1+/j</li>
+                <li>💪 : 1/j → 1/w</li>
+                <li>🤷‍♂️ : 1/w → 1/m</li>
+                <li>💩 : 1/m → 1/6m</li>
+              </ul>
+            </div>
+          </div>
           <h4>
             (Le temps entre la réception de la demande d’un changement de code
             et son passage à un état déployable)
@@ -41,6 +59,14 @@
           <button class="meanTimeToRecoverAPI">launch API</button>
           <div class="wrap-KPI">
             <div class="KPI" id="meanTimeToRecoverKPI"></div>
+            <div>
+              <ul>
+                <li>🚀 : -1h</li>
+                <li>💪 : -1j</li>
+                <li>🤷‍♂️ : -1w</li>
+                <li>💩 : -1m</li>
+              </ul>
+            </div>
           </div>
           <h4>
             (Temps écoulé entre la remontée d'un bug et la mise en production du
@@ -53,6 +79,14 @@
           <button class="launchChangeFailureRate">launch API</button>
           <div class="wrap-KPI">
             <div class="KPI" id="changeFailureRateKPI"></div>
+            <div class="legend">
+              <ul>
+                <li>🚀 : 0-15%</li>
+                <li>💪 : 16-30%</li>
+                <li>🤷‍♂️ : 31-45%</li>
+                <li>💩 : 46%-60%</li>
+              </ul>
+            </div>
           </div>
           <h4>
             (La fréquence à laquelle les modifications ou les correctifs
@@ -64,10 +98,8 @@
       </div>
     </main>
   </body>
-  <script
-    type="module"
-    src="scripts/meanTimeToRecover--leadTimeForChange.js"
-  ></script>
+  <script type="module" src="scripts/leadTimeForChange.js"></script>
+  <script type="module" src="scripts/meanTimeToRecover.js"></script>
   <script type="module" src="scripts/changeFailureRate.js"></script>
   <script type="module" src="scripts/deploymentFrequency.js"></script>
 </html>

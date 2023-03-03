@@ -1,3 +1,5 @@
+import { leadTimeForChange } from "./leadTimeForChange";
+
 const cloudId = "315e7629-5056-4a70-9077-97c3637a4366";
 let startAt = 0;
 const maxResults = 100;
@@ -36,9 +38,12 @@ async function timeToFixBugs(cloudId, startAt = 0, maxResults = 100) {
 
   for (let i = 0; i < issues.issues.length; i++) {
     const issue = issues.issues[i];
+    if (issue.fields.status.name === "Merged in Prod") {
+      //Lead Time For Change
+      leadTimeForChange(issue.key);
 
-    if (issue.fields.issuetype.name === "Bug") {
-      if (issue.fields.status.name === "Merged in Prod") {
+      //Mean Time To Recover
+      if (issue.fields.issuetype.name === "Bug") {
         const dateCreation = new Date(issue.fields.created);
         const dateFinished = new Date(issue.fields.statuscategorychangedate);
         const timeToComplete = dateFinished - dateCreation;
