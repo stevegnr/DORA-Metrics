@@ -119,5 +119,9 @@ async function avgTimeForAllBugsToBeCorrected() {
   meanTimeToRecoverKPI.appendChild(meanTimeToRecoverValue);
 }
 
-const launchJiraAPI = document.querySelector(".launchJiraAPI");
-launchJiraAPI.addEventListener("click", () => avgTimeForAllBugsToBeCorrected());
+const launchMeanTimeToRecoverAPI = document.querySelector(
+  ".meanTimeToRecoverAPI"
+);
+launchMeanTimeToRecoverAPI.addEventListener("click", () =>
+  avgTimeForAllBugsToBeCorrected()
+);

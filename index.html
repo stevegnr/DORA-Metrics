@@ -14,8 +14,10 @@
       <div class="wrapper">
         <article id="deploymentFrequency">
           <h2>Fréquence de déploiement</h2>
-          <button class="launchAPI">launch API</button>
-          <div class="wrap-KPI"><div class="KPI"></div></div>
+          <button class="launchDeploymentFrequencyAPI">launch API</button>
+          <div class="wrap-KPI">
+            <div class="KPI" id="deploymentFrequencyKPI"></div>
+          </div>
 
           <h4>
             (La fréquence avec laquelle des déploiements réussis sont effectués)
@@ -36,7 +38,7 @@
       <div class="wrapper">
         <article id="meanTimeToRecover">
           <h2>Temps moyen de récupération</h2>
-          <button class="launchJiraAPI">launch API</button>
+          <button class="meanTimeToRecoverAPI">launch API</button>
           <div class="wrap-KPI">
             <div class="KPI" id="meanTimeToRecoverKPI"></div>
           </div>
@@ -48,8 +50,10 @@
         </article>
         <article id="changeFailureRate">
           <h2>Taux d'échec des changements</h2>
-          <button class="launchAPI">launch API</button>
-          <div class="wrap-KPI"><div class="KPI"></div></div>
+          <button class="launchChangeFailureRate">launch API</button>
+          <div class="wrap-KPI">
+            <div class="KPI" id="changeFailureRateKPI"></div>
+          </div>
           <h4>
             (La fréquence à laquelle les modifications ou les correctifs
             apportés par une équipe entraînent des défaillances ou des pannes
@@ -60,5 +64,7 @@
       </div>
     </main>
   </body>
-  <script type="module" src="scriptJIRA.js"></script>
+  <script type="module" src="meanTimeToRecover.js"></script>
+  <script type="module" src="changeFailureRate.js"></script>
+  <script type="module" src="deploymentFrequency.js"></script>
 </html>
