@@ -4,8 +4,6 @@ const token =
 const toHours = 1000 * 60 * 60;
 const toDays = toHours * 24;
 
-const issueKey = "DP-1238";
-
 async function changelog(issueKey) {
   const changelog = await fetch(
     `https://api.atlassian.com/ex/jira/${cloudId}/rest/api/3/issue/${issueKey}/changelog`,
