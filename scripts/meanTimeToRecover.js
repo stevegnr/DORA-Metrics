@@ -1,5 +1,3 @@
-import leadTimeForChange from "./leadTimeForChange";
-
 const cloudId = "315e7629-5056-4a70-9077-97c3637a4366";
 let startAt = 0;
 const maxResults = 100;
@@ -8,7 +6,11 @@ const token =
 const toHours = 1000 * 60 * 60;
 const toDays = toHours * 24;
 
-async function amountOfIssues(cloudId) {
+//Data for leadTimeForChange
+let issuesMergedInProd = [];
+
+// Récupère les 100 premiers tickets et renvoie leur nombre total
+async function amountOfIssues() {
   const amount = await fetch(
     `https://api.atlassian.com/ex/jira/${cloudId}/rest/api/3/search`,
     {
@@ -23,8 +25,26 @@ async function amountOfIssues(cloudId) {
   return amount.total;
 }
 
-async function timeToFixBugs(cloudId, startAt = 0, maxResults = 100) {
+// Récupère le changelog du projet
+async function changelog(issueKey) {
+  const changelog = await fetch(
+    `https://api.atlassian.com/ex/jira/${cloudId}/rest/api/3/issue/${issueKey}/changelog`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `${token}`,
+      },
+    }
+  ).then((changelog) => changelog.json());
+
+  return changelog;
+}
+
+// Récupère le temps de résolution de chaque bug
+async function timeToFixBugs(startAt = 0, maxResults = 100) {
   let timesToFixBugs = [];
+
   const issues = await fetch(
     `https://api.atlassian.com/ex/jira/${cloudId}/rest/api/3/search?startAt=${startAt}&maxResults=${maxResults}`,
     {
@@ -38,11 +58,12 @@ async function timeToFixBugs(cloudId, startAt = 0, maxResults = 100) {
 
   for (let i = 0; i < issues.issues.length; i++) {
     const issue = issues.issues[i];
-    if (issue.fields.status.name === "Merged in Prod") {
-      //Lead Time For Change
-      leadTimeForChange(issue.key);
 
-      //Mean Time To Recover
+    if (issue.fields.status.name === "Merged in Prod") {
+      //Data for leadTimeForChange
+      issuesMergedInProd.push(issue.key);
+
+      //meanTimeToRecover
       if (issue.fields.issuetype.name === "Bug") {
         const dateCreation = new Date(issue.fields.created);
         const dateFinished = new Date(issue.fields.statuscategorychangedate);
@@ -56,6 +77,7 @@ async function timeToFixBugs(cloudId, startAt = 0, maxResults = 100) {
   return timesToFixBugs;
 }
 
+// Calcule le temps moyen de correction des bugs et affiche dans le KPI
 async function avgTimeForAllBugsToBeCorrected() {
   const loadingMTTR = document.getElementById("loadingMTTR");
   const loadingText = document.createElement("p");
@@ -73,14 +95,14 @@ async function avgTimeForAllBugsToBeCorrected() {
 
   allTimesToFixBugs = [
     ...allTimesToFixBugs,
-    ...(await timeToFixBugs(cloudId, startAt, maxResults)),
+    ...(await timeToFixBugs(startAt, maxResults)),
   ];
   startAt += maxResults;
 
   for (startAt; startAt < totalOfIssues; startAt += maxResults) {
     allTimesToFixBugs = [
       ...allTimesToFixBugs,
-      ...(await timeToFixBugs(cloudId, startAt, maxResults)),
+      ...(await timeToFixBugs(startAt, maxResults)),
     ];
     loadingText.innerHTML = "";
     loadingText.innerText = `Récupération des données en cours... ${
@@ -122,6 +144,84 @@ async function avgTimeForAllBugsToBeCorrected() {
   }
 
   meanTimeToRecoverKPI.appendChild(meanTimeToRecoverValue);
+
+  leadTimeForChange(issuesMergedInProd);
+}
+
+// Récupère le délai d'exécution des changements
+async function leadTimeForChange(issuesKey) {
+  let dateCodeReview;
+  let dateMergedInProd;
+  let timeForChangeMs = 0;
+  let totalOfTimesForChangeMs = 0;
+  let timeForChangeMsLength = 0;
+
+  console.log(issuesKey);
+  for (let incr = 0; incr < issuesKey.length; incr++) {
+    dateCodeReview = null;
+    dateMergedInProd = null;
+
+    const changelogOfAnIssue = await changelog(issuesKey[incr]);
+
+    for (let i = 0; i < changelogOfAnIssue.values.length; i++) {
+      if (changelogOfAnIssue.values[i].items[0].toString === "To Code Review") {
+        dateCodeReview = new Date(changelogOfAnIssue.values[i].created);
+      } else if (
+        changelogOfAnIssue.values[i].items[0].toString === "Merged in Prod"
+      ) {
+        dateMergedInProd = new Date(changelogOfAnIssue.values[i].created);
+      }
+    }
+    if (dateCodeReview !== null && dateMergedInProd !== null) {
+      timeForChangeMs = dateMergedInProd - dateCodeReview;
+      totalOfTimesForChangeMs += timeForChangeMs;
+      timeForChangeMsLength++;
+    }
+    console.log({
+      issueKey: issuesKey[incr],
+      dateCodeReview,
+      dateMergedInProd,
+      timeForChangeMs,
+      totalOfTimesForChangeMs,
+      timeForChangeMsLength,
+    });
+  }
+
+  let avgLeadTimeForChange = totalOfTimesForChangeMs / timeForChangeMsLength;
+
+  let avgLeadTimeForChangeDays = avgLeadTimeForChange / toDays;
+
+  console.log(Math.round(avgLeadTimeForChange * 100) / 100);
+
+  const leadTimeForChangeKPI = document.getElementById("leadTimeForChangeKPI");
+  const leadTimeForChangeValue = document.createElement("p");
+  if (avgLeadTimeForChangeDays < 1) {
+    leadTimeForChangeValue.innerText = `${
+      Math.round(avgLeadTimeForChangeDays * 100) / 100
+    }j !!! 🤘🤘🤘`;
+    leadTimeForChangeKPI.style.backgroundColor = "green";
+    leadTimeForChangeKPI.style.color = "white";
+  } else if (avgLeadTimeForChangeDays >= 1 && avgLeadTimeForChangeDays < 7) {
+    leadTimeForChangeValue.innerText = `${
+      Math.round(avgLeadTimeForChangeDays * 100) / 100
+    }j ! 👍`;
+    leadTimeForChangeKPI.style.backgroundColor = "green";
+    leadTimeForChangeKPI.style.color = "white";
+  } else if (avgLeadTimeForChangeDays >= 7 && avgLeadTimeForChangeDays < 30.4) {
+    leadTimeForChangeValue.innerText = `${
+      Math.round(avgLeadTimeForChangeDays * 100) / 100
+    }j 🤷‍♂️`;
+    leadTimeForChangeKPI.style.backgroundColor = "yellow";
+    leadTimeForChangeKPI.style.color = "black";
+  } else {
+    leadTimeForChangeValue.innerText = `${
+      Math.round(avgLeadTimeForChangeDays * 100) / 100
+    }j 😭`;
+    leadTimeForChangeKPI.style.backgroundColor = "red";
+    leadTimeForChangeKPI.style.color = "white";
+  }
+
+  leadTimeForChangeKPI.appendChild(leadTimeForChangeValue);
 }
 
 const launchMeanTimeToRecoverAPI = document.querySelector(
