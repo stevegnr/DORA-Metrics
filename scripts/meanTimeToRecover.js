@@ -1,4 +1,4 @@
-import { leadTimeForChange } from "./leadTimeForChange";
+import leadTimeForChange from "./leadTimeForChange";
 
 const cloudId = "315e7629-5056-4a70-9077-97c3637a4366";
 let startAt = 0;
