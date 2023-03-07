@@ -62,7 +62,7 @@ async function changeFailureRate() {
   const changeFailureRateKPI = document.getElementById("changeFailureRateKPI");
   const changeFailureRateValue = document.createElement("p");
   if (ratio <= 15) {
-    changeFailureRateValue.innerText = `${ratio}% !!! 🤘🤘🤘`;
+    changeFailureRateValue.innerText = `${ratio}% !!! 🚀`;
     changeFailureRateKPI.style.backgroundColor = "green";
     changeFailureRateKPI.style.color = "white";
   } else if (ratio > 15 && ratio <= 30) {
@@ -74,7 +74,7 @@ async function changeFailureRate() {
     changeFailureRateKPI.style.backgroundColor = "yellow";
     changeFailureRateKPI.style.color = "black";
   } else {
-    changeFailureRateValue.innerText = `${ratio}% 😭`;
+    changeFailureRateValue.innerText = `${ratio}% 💩`;
     changeFailureRateKPI.style.backgroundColor = "red";
     changeFailureRateKPI.style.color = "white";
   }

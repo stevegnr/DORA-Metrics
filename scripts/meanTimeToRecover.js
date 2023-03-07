@@ -156,7 +156,7 @@ async function avgTimeForAllBugsToBeCorrected() {
   if (avgTimePerBug < 1) {
     meanTimeToRecoverValue.innerText = `${
       Math.round(avgTimePerBug * 100 * 60) / 100
-    }min !!! 🤘🤘🤘`;
+    }min !!! 🚀`;
     meanTimeToRecoverKPI.style.backgroundColor = "green";
     meanTimeToRecoverKPI.style.color = "white";
   } else if (avgTimePerBug >= 1 && avgTimePerBug < 24) {
@@ -174,7 +174,7 @@ async function avgTimeForAllBugsToBeCorrected() {
   } else {
     meanTimeToRecoverValue.innerText = `${
       Math.round((avgTimePerBug / 24) * 100) / 100
-    }j 😭`;
+    }j 💩`;
     meanTimeToRecoverKPI.style.backgroundColor = "red";
     meanTimeToRecoverKPI.style.color = "white";
   }
@@ -275,7 +275,7 @@ async function leadTimeForChange(issuesKey) {
   if (avgLeadTimeForChangeDays < 1) {
     leadTimeForChangeValue.innerText = `${
       Math.round(avgLeadTimeForChangeDays * 100) / 100
-    }j !!! 🤘🤘🤘`;
+    }j !!! 🚀`;
     leadTimeForChangeKPI.style.backgroundColor = "green";
     leadTimeForChangeKPI.style.color = "white";
   } else if (avgLeadTimeForChangeDays >= 1 && avgLeadTimeForChangeDays < 7) {
@@ -293,7 +293,7 @@ async function leadTimeForChange(issuesKey) {
   } else {
     leadTimeForChangeValue.innerText = `${
       Math.round(avgLeadTimeForChangeDays * 100) / 100
-    }j 😭`;
+    }j 💩`;
     leadTimeForChangeKPI.style.backgroundColor = "red";
     leadTimeForChangeKPI.style.color = "white";
   }

@@ -50,7 +50,7 @@ async function deploymentFrequency() {
   if (deploysPerDay > 1) {
     deploymentFrequencyValue.innerText = `${
       Math.round(deploysPerDay * 10) / 10
-    } deploiments per day 🤘🤘🤘`;
+    } deploiments per day 🚀`;
     deploymentFrequencyKPI.style.backgroundColor = "green";
     deploymentFrequencyKPI.style.color = "white";
   } else if (deploysPerDay <= 1 && deploysPerWeek >= 1) {
@@ -68,7 +68,7 @@ async function deploymentFrequency() {
   } else {
     deploymentFrequencyValue.innerText = `${
       Math.round(10 * deploysPerWeek) / 10
-    } deploiments per week 😭`;
+    } deploiments per week 💩`;
     deploymentFrequencyKPI.style.backgroundColor = "red";
     deploymentFrequencyKPI.style.color = "white";
   }

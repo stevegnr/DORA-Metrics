@@ -49,7 +49,7 @@ export async function leadTimeForChange(issueKey) {
   if (avgLeadTimeForChangeDays < 1) {
     leadTimeForChangeValue.innerText = `${
       Math.round(avgLeadTimeForChangeDays * 100 * 60) / 100
-    }j !!! 🤘🤘🤘`;
+    }j !!! 🚀`;
     leadTimeForChangeKPI.style.backgroundColor = "green";
     leadTimeForChangeKPI.style.color = "white";
   } else if (avgLeadTimeForChangeDays >= 1 && avgLeadTimeForChangeDays < 7) {
@@ -67,7 +67,7 @@ export async function leadTimeForChange(issueKey) {
   } else {
     leadTimeForChangeValue.innerText = `${
       Math.round((avgLeadTimeForChangeDays / 24) * 100) / 100
-    }j 😭`;
+    }j 💩`;
     leadTimeForChangeKPI.style.backgroundColor = "red";
     leadTimeForChangeKPI.style.color = "white";
   }
