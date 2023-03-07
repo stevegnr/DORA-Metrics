@@ -7,8 +7,29 @@ const toHours = 1000 * 60 * 60;
 const toDays = toHours * 24;
 
 //Data for leadTimeForChange
+let bugsWithDetails = [];
+let issuesWithDetails = [];
 let issuesMergedInProd = [];
 
+class Bug {
+  constructor(key, link, title, dateCreation, dateFinished, timeToComplete) {
+    this.key = key;
+    this.link = link;
+    this.title = title;
+    this.dateCreation = dateCreation;
+    this.dateFinished = dateFinished;
+    this.timeToComplete = timeToComplete;
+  }
+}
+class Issue {
+  constructor(key, link, dateCodeReview, dateMergedInProd, timeToComplete) {
+    this.key = key;
+    this.link = link;
+    this.dateCodeReview = dateCodeReview;
+    this.dateMergedInProd = dateMergedInProd;
+    this.timeToComplete = timeToComplete;
+  }
+}
 // Récupère les 100 premiers tickets et renvoie leur nombre total
 async function amountOfIssues() {
   const amount = await fetch(
@@ -70,6 +91,16 @@ async function timeToFixBugs(startAt = 0, maxResults = 100) {
         const timeToComplete = dateFinished - dateCreation;
 
         timesToFixBugs.push(timeToComplete);
+        bugsWithDetails.push(
+          new Bug(
+            issue.key,
+            `https://teamstarter.atlassian.net/browse/${issue.key}`,
+            issue.fields.summary,
+            dateCreation,
+            dateFinished,
+            timeToComplete
+          )
+        );
       }
     }
   }
@@ -83,6 +114,11 @@ async function avgTimeForAllBugsToBeCorrected() {
   const loadingText = document.createElement("p");
   loadingText.innerText = `Lancement de l'API`;
   loadingMTTR.appendChild(loadingText);
+
+  const loadingLTFC = document.getElementById("loadingLTFC");
+  const loadingTextLTFC = document.createElement("p");
+  loadingTextLTFC.innerText = `Lancement de l'API`;
+  loadingLTFC.appendChild(loadingTextLTFC);
 
   let allTimesToFixBugs = [];
   let sumTimesToFixBugs = 0;
@@ -145,6 +181,37 @@ async function avgTimeForAllBugsToBeCorrected() {
 
   meanTimeToRecoverKPI.appendChild(meanTimeToRecoverValue);
 
+  const detailsMTTR = document.getElementById("detailsMTTR");
+
+  for (let i = 0; i < bugsWithDetails.length; i++) {
+    const detailsMTTRRow = document.createElement("tr");
+
+    const MTTRKey = document.createElement("td");
+    const MTTRLink = document.createElement("a");
+    MTTRLink.href = bugsWithDetails[i].link;
+    MTTRLink.innerText = bugsWithDetails[i].key;
+    MTTRLink.target = "_blank";
+    MTTRKey.appendChild(MTTRLink);
+    detailsMTTRRow.appendChild(MTTRKey);
+
+    const MTTRTitle = document.createElement("td");
+    MTTRTitle.innerText = bugsWithDetails[i].title;
+    detailsMTTRRow.appendChild(MTTRTitle);
+
+    const MTTRCD = document.createElement("td");
+    MTTRCD.innerText = bugsWithDetails[i].dateCreation.toLocaleString();
+    detailsMTTRRow.appendChild(MTTRCD);
+
+    const MTTRFD = document.createElement("td");
+    MTTRFD.innerText = bugsWithDetails[i].dateFinished.toLocaleString();
+    detailsMTTRRow.appendChild(MTTRFD);
+
+    const MTTRTTF = document.createElement("td");
+    MTTRTTF.innerText =
+      Math.round((10 * bugsWithDetails[i].timeToComplete) / toDays) / 10;
+    detailsMTTRRow.appendChild(MTTRTTF);
+    detailsMTTR.appendChild(detailsMTTRRow);
+  }
   leadTimeForChange(issuesMergedInProd);
 }
 
@@ -156,8 +223,17 @@ async function leadTimeForChange(issuesKey) {
   let totalOfTimesForChangeMs = 0;
   let timeForChangeMsLength = 0;
 
-  console.log(issuesKey);
+  const loadingLTFC = document.getElementById("loadingLTFC");
+  const loadingTextLTFC = document.createElement("p");
+  loadingLTFC.innerHTML = "";
+  loadingLTFC.appendChild(loadingTextLTFC);
+
   for (let incr = 0; incr < issuesKey.length; incr++) {
+    loadingTextLTFC.innerHTML = "";
+    loadingTextLTFC.innerText = `Récupération des données en cours... ${Math.round(
+      (incr * 100) / issuesKey.length
+    )} %`;
+
     dateCodeReview = null;
     dateMergedInProd = null;
 
@@ -176,22 +252,23 @@ async function leadTimeForChange(issuesKey) {
       timeForChangeMs = dateMergedInProd - dateCodeReview;
       totalOfTimesForChangeMs += timeForChangeMs;
       timeForChangeMsLength++;
+      issuesWithDetails.push(
+        new Issue(
+          issuesKey[incr],
+          `https://teamstarter.atlassian.net/browse/${issuesKey[incr]}`,
+          dateCodeReview,
+          dateMergedInProd,
+          timeForChangeMs
+        )
+      );
     }
-    console.log({
-      issueKey: issuesKey[incr],
-      dateCodeReview,
-      dateMergedInProd,
-      timeForChangeMs,
-      totalOfTimesForChangeMs,
-      timeForChangeMsLength,
-    });
   }
+
+  loadingTextLTFC.innerHTML = "";
 
   let avgLeadTimeForChange = totalOfTimesForChangeMs / timeForChangeMsLength;
 
   let avgLeadTimeForChangeDays = avgLeadTimeForChange / toDays;
-
-  console.log(Math.round(avgLeadTimeForChange * 100) / 100);
 
   const leadTimeForChangeKPI = document.getElementById("leadTimeForChangeKPI");
   const leadTimeForChangeValue = document.createElement("p");
@@ -222,6 +299,34 @@ async function leadTimeForChange(issuesKey) {
   }
 
   leadTimeForChangeKPI.appendChild(leadTimeForChangeValue);
+
+  const detailsLTFC = document.getElementById("detailsLTFC");
+
+  for (let i = 0; i < issuesWithDetails.length; i++) {
+    const detailsLTFCRow = document.createElement("tr");
+
+    const LTFCKey = document.createElement("td");
+    const LTFCLink = document.createElement("a");
+    LTFCLink.href = issuesWithDetails[i].link;
+    LTFCLink.innerText = issuesWithDetails[i].key;
+    LTFCLink.target = "_blank";
+    LTFCKey.appendChild(LTFCLink);
+    detailsLTFCRow.appendChild(LTFCKey);
+
+    const LTFCCRD = document.createElement("td");
+    LTFCCRD.innerText = issuesWithDetails[i].dateCodeReview.toLocaleString();
+    detailsLTFCRow.appendChild(LTFCCRD);
+
+    const LTFCFD = document.createElement("td");
+    LTFCFD.innerText = issuesWithDetails[i].dateMergedInProd.toLocaleString();
+    detailsLTFCRow.appendChild(LTFCFD);
+
+    const LTFCTTF = document.createElement("td");
+    LTFCTTF.innerText =
+      Math.round((10 * issuesWithDetails[i].timeToComplete) / toDays) / 10;
+    detailsLTFCRow.appendChild(LTFCTTF);
+    detailsLTFC.appendChild(detailsLTFCRow);
+  }
 }
 
 const launchMeanTimeToRecoverAPI = document.querySelector(

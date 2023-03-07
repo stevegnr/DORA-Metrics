@@ -17,7 +17,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 100%;
+  width: 95%;
   height: 80%;
   padding: 10px;
 }
@@ -56,4 +56,24 @@ ul {
   font-size: large;
   padding: 0;
   background-color: white;
+}
+
+aside {
+  display: flex;
+  justify-content: space-around;
+}
+
+.details {
+  width: 48%;
+  border: 1px solid black;
+}
+
+table {
+  justify-content: space-between;
+  font-size: small;
+}
+
+td {
+  width: 15%;
+  text-align: center;
 }

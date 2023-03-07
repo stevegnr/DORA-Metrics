@@ -34,7 +34,6 @@
           <h4>
             (La fréquence avec laquelle des déploiements réussis sont effectués)
           </h4>
-          <p class="loading"></p>
         </article>
         <article id="leadTimeForChange">
           <h2>Délai d'exécution des changements</h2>
@@ -54,7 +53,7 @@
             (Le temps entre la réception de la demande d’un changement de code
             et son passage à un état déployable)
           </h4>
-          <p class="loading"></p>
+          <div id="loadingLTFC"></div>
         </article>
       </div>
       <div class="wrapper">
@@ -97,9 +96,33 @@
             apportés par une équipe entraînent des défaillances ou des pannes
             après le déploiement du code)
           </h4>
-          <p class="loading"></p>
         </article>
       </div>
     </main>
+    <aside>
+      <div class="details">
+        <h2>Temps moyen de récupération : détails</h2>
+        <table id="detailsMTTR">
+          <tr>
+            <th>Key</th>
+            <th>Title</th>
+            <th>Creation date</th>
+            <th>Finish date</th>
+            <th>Time to fix (j)</th>
+          </tr>
+        </table>
+      </div>
+      <div class="details">
+        <h2>Délai d'exécution des changements : détails</h2>
+        <table id="detailsLTFC">
+          <tr>
+            <th>Key</th>
+            <th>Code Review</th>
+            <th>Finish date</th>
+            <th>Time to (j)</th>
+          </tr>
+        </table>
+      </div>
+    </aside>
   </body>
 </html>

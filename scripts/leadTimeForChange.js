@@ -28,16 +28,12 @@ export async function leadTimeForChange(issueKey) {
   let timeForChangeMsLength;
 
   for (let i = 0; i < changelogOfAnIssue.values.length; i++) {
-    console.log(changelogOfAnIssue.values[i].items[0].toString);
-
     if (changelogOfAnIssue.values[i].items[0].toString === "To Code Review") {
       dateCodeReview = new Date(changelogOfAnIssue.values[i].created);
-      console.log(dateCodeReview);
     } else if (
       changelogOfAnIssue.values[i].items[0].toString === "Merged in Prod"
     ) {
       dateMergedInProd = new Date(changelogOfAnIssue.values[i].created);
-      console.log(dateMergedInProd);
     }
     timeForChangeMs = dateMergedInProd - dateCodeReview;
     totalOfTimesForChangeMs += timeForChangeMs;
@@ -47,8 +43,6 @@ export async function leadTimeForChange(issueKey) {
   let avgLeadTimeForChange = totalOfTimesForChangeMs / timeForChangeMsLength;
 
   let avgLeadTimeForChangeDays = timeForChangeMs / toDays;
-
-  console.log(Math.round(avgLeadTimeForChange * 100) / 100);
 
   const leadTimeForChangeKPI = document.getElementById("leadTimeForChangeKPI");
   const leadTimeForChangeValue = document.createElement("p");
