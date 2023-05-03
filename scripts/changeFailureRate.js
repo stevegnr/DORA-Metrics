@@ -1,7 +1,7 @@
-const owner = "teamstarter";
-const repo = "teamstarter";
+const owner = "" //CONFIDENTIEL
+const repo = "" //CONFIDENTIEL
 const token =
-  "token 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";
+  "" //CONFIDENTIEL
 
 async function getChangelog() {
   const changelog = await fetch(
