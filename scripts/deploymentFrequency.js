@@ -1,8 +1,7 @@
 const apiURL = "https://api.github.com";
-const owner = "teamstarter";
-const repo = "teamstarter";
-const token =
-  "token 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";
+const owner = "" //CONFIDENTIEL
+const repo = "" //CONFIDENTIEL
+const token = "" //CONFIDENTIEL
 
 async function getDeploiments() {
   const deploiments = await fetch(
