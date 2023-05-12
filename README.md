@@ -15,4 +15,4 @@ This project allows you to see your dev team's performance. All you need to do i
 - Add your credentials for GitHub/Jira instead of CONFIDENTIAL comments in js scripts.
 - Open Index.html in your browser.
 
-Please be aware this project has been made for a private company, your context may imply code editing.
+#Please be aware this project has been made for a private company, your context may imply code editing.
